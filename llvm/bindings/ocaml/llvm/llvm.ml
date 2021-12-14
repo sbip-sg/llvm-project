@@ -436,6 +436,8 @@ external data_layout: llmodule -> string
                     = "llvm_data_layout"
 external set_data_layout: string -> llmodule -> unit
                         = "llvm_set_data_layout"
+external source_file_name: llmodule -> string
+                         = "llvm_source_file_name"
 external dump_module : llmodule -> unit = "llvm_dump_module"
 external print_module : string -> llmodule -> unit = "llvm_print_module"
 external string_of_llmodule : llmodule -> string = "llvm_string_of_llmodule"

@@ -315,6 +315,12 @@ value llvm_set_data_layout(value Layout, LLVMModuleRef M) {
   return Val_unit;
 }
 
+/* llmodule -> string */
+value llvm_source_file_name(LLVMModuleRef M) {
+  size_t Len;
+  return caml_copy_string(LLVMGetSourceFileName(M, &Len));
+}
+
 /* llmodule -> unit */
 value llvm_dump_module(LLVMModuleRef M) {
   LLVMDumpModule(M);

@@ -523,6 +523,10 @@ val data_layout: llmodule -> string
     to the string [s]. See the method [llvm::Module::setDataLayout]. *)
 val set_data_layout: string -> llmodule -> unit
 
+(** [source_file_name m] is the original source file name of the module [m].
+    See the method [llvm::Module::getSourceFileName]. *)
+val source_file_name: llmodule -> string
+
 (** [dump_module m] prints the .ll representation of the module [m] to standard
     error. See the method [llvm::Module::dump]. *)
 val dump_module : llmodule -> unit
@@ -557,7 +561,7 @@ val set_module_identifer : llmodule -> string -> unit
 val get_module_flag : llmodule -> string -> llmetadata option
 
 (** [add_module_flag m b k v] Add a module-level flag b, with key [k] and
-    value [v] to the flags metadata of module [m]. It will create the 
+    value [v] to the flags metadata of module [m]. It will create the
     module-level flags named metadata if it doesn't already exist. *)
 val add_module_flag : llmodule -> ModuleFlagBehavior.t ->
                         string -> llmetadata -> unit
