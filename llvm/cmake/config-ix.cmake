@@ -641,7 +641,8 @@ else()
         find_ocamlfind_package(oUnit VERSION 2 OPTIONAL)
         set(LLVM_BINDINGS "${LLVM_BINDINGS} ocaml")
 
-        set(LLVM_OCAML_INSTALL_PATH "${OCAML_STDLIB_PATH}" CACHE STRING
+        # set(LLVM_OCAML_INSTALL_PATH "${OCAML_STDLIB_PATH}" CACHE STRING
+        set(LLVM_OCAML_INSTALL_PATH "${OCAML_PACKAGE_DESTDIR}" CACHE STRING
             "Install directory for LLVM OCaml packages")
       else()
         message(STATUS "OCaml bindings disabled, need ctypes >=0.4.")

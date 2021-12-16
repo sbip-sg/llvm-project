@@ -10,6 +10,7 @@
 # OCAMLFIND
 # OCAML_VERSION
 # OCAML_STDLIB_PATH
+# OCAML_PACKAGE_DESTDIR
 # HAVE_OCAMLOPT
 #
 # Also provides find_ocamlfind_package() macro.
@@ -40,6 +41,11 @@ if( OCAMLFIND )
   execute_process(
     COMMAND ${OCAMLFIND} ocamlc -where
     OUTPUT_VARIABLE OCAML_STDLIB_PATH
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+  execute_process(
+    COMMAND ${OCAMLFIND} printconf destdir
+    OUTPUT_VARIABLE OCAML_PACKAGE_DESTDIR
     OUTPUT_STRIP_TRAILING_WHITESPACE)
 
   execute_process(
