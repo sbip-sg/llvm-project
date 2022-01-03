@@ -1474,6 +1474,11 @@ unsigned LLVMDIVariableGetLine(LLVMMetadataRef Var) {
   return unwrapDI<DIVariable>(Var)->getLine();
 }
 
+const char *LLVMDIVariableGetName(LLVMMetadataRef Var) {
+  StringRef Str = unwrapDI<DIVariable>(Var)->getName();
+  return Str.data();
+}
+
 LLVMMetadataRef LLVMTemporaryMDNode(LLVMContextRef Ctx, LLVMMetadataRef *Data,
                                     size_t Count) {
   return wrap(

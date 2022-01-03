@@ -315,6 +315,10 @@ val di_global_variable_expression_get_variable :
     of [gve], which must be a [DIGlobalVariableExpression].
     See LLVMDIGlobalVariableExpressionGetVariable. *)
 
+val di_variable_get_name : Llvm.llmetadata -> string
+(** [di_variable_get_name v] returns the name of the variable [v].
+    See LLVMDIVariableGetName. *)
+
 val di_variable_get_line : Llvm.llmetadata -> int
 (** [di_variable_get_line v] returns the line number of the variable [v].
     See LLVMDIVariableGetLine. *)

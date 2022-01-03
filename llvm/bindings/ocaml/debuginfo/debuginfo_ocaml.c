@@ -900,6 +900,10 @@ value llvm_di_global_variable_expression_get_variable(LLVMMetadataRef GVE) {
   return (ptr_to_option(LLVMDIGlobalVariableExpressionGetVariable(GVE)));
 }
 
+value llvm_di_variable_get_name(LLVMMetadataRef Variable) {
+  return (ptr_to_option(LLVMDIVariableGetName(Variable)));
+}
+
 value llvm_di_variable_get_line(LLVMMetadataRef Variable) {
   return Val_int(LLVMDIVariableGetLine(Variable));
 }

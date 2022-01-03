@@ -557,6 +557,9 @@ external di_global_variable_expression_get_variable :
   Llvm.llmetadata -> Llvm.llmetadata option
   = "llvm_di_global_variable_expression_get_variable"
 
+external di_variable_get_name : Llvm.llmetadata -> string
+  = "llvm_di_variable_get_name"
+
 external di_variable_get_line : Llvm.llmetadata -> int
   = "llvm_di_variable_get_line"
 

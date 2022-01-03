@@ -1146,6 +1146,14 @@ LLVMMetadataRef LLVMDIGlobalVariableExpressionGetExpression(
  * Get the metadata of the file associated with a given variable.
  * \param Var     The variable object.
  *
+ * @see DIVariable::getName()
+ */
+const char *LLVMDIVariableGetName(LLVMMetadataRef Var);
+
+/**
+ * Get the metadata of the file associated with a given variable.
+ * \param Var     The variable object.
+ *
  * @see DIVariable::getFile()
  */
 LLVMMetadataRef LLVMDIVariableGetFile(LLVMMetadataRef Var);
