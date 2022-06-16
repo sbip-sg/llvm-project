@@ -1148,6 +1148,14 @@ LLVMMetadataRef LLVMDIBuilderCreateGlobalVariableExpression(
 LLVMMetadataRef LLVMDIGlobalVariableExpressionGetVariable(LLVMMetadataRef GVE);
 
 /**
+ * Get the metadata of the file associated with a given variable.
+ * \param Var     The variable object.
+ *
+ * @see DIVariable::getName()
+ */
+const char *LLVMDIVariableGetName(LLVMMetadataRef Var);
+
+/**
  * Retrieves the \c DIExpression associated with this global variable expression.
  * \param GVE    The global variable expression.
  *
