@@ -13,6 +13,25 @@
 #include "llvm/InitializePasses.h"
 #include "llvm/PassRegistry.h"
 #include "llvm/Support/raw_ostream.h"
+#include "llvm/Analysis/AliasAnalysis.h"
+#include "llvm/Pass.h"
+#include "llvm/IR/Value.h"
+#include "llvm/Analysis/BasicAliasAnalysis.h"
+
+#include "llvm/IR/Function.h"
+#include "llvm/IR/IRBuilder.h"
+#include "llvm/IR/PassManager.h"
+#include "llvm/IR/Type.h"
+
+#include "llvm/Passes/PassBuilder.h"
+#include "llvm/Passes/PassPlugin.h"
+#include "llvm/Support/raw_ostream.h"
+
+#include "llvm/IR/LegacyPassManager.h"
+#include "llvm/Transforms/IPO/PassManagerBuilder.h"
+
+
+
 #include <cstring>
 
 using namespace llvm;
@@ -137,4 +156,26 @@ void LLVMViewFunctionCFG(LLVMValueRef Fn) {
 void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
   Function *F = unwrap<Function>(Fn);
   F->viewCFGOnly();
+}
+
+/* Check alias between two pointers. */
+LLVMAliasResult LLVMAlias(LLVMValueRef VRef1, LLVMValueRef VRef2){
+  Value *V1 = unwrap<Value>(VRef1);
+  Value *V2 = unwrap<Value>(VRef2);
+  llvm::TargetLibraryInfoImpl TLII;
+  llvm::TargetLibraryInfo TLI(TLII);
+  llvm::AliasAnalysis AA(TLI);
+
+  AliasResult aares = AA.alias(V1, V2);
+  if (aares == AliasResult::NoAlias) {
+    return LLVMNoAlias;
+  }
+  if (aares == AliasResult::MustAlias) {
+    return LLVMMustAlias;
+  }
+  if (aares == AliasResult::PartialAlias) {
+    return LLVMPartialAlias;
+  }
+
+  return LLVMMayAlias;
 }
