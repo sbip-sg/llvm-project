@@ -69,7 +69,7 @@ void LLVMViewFunctionCFG(LLVMValueRef Fn);
 void LLVMViewFunctionCFGOnly(LLVMValueRef Fn);
 
 /* Check alias between two pointers. */
-LLVMAliasResult LLVMAlias(LLVMValueRef V1, LLVMValueRef V2);
+LLVMAliasResult LLVMAlias(LLVMModuleRef Module, LLVMValueRef V1, LLVMValueRef V2);
 
 /**
  * @}
