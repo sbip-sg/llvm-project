@@ -34,8 +34,6 @@
 #include "llvm/Analysis/AssumptionCache.h"
 
 
-
-
 #include <cstring>
 
 using namespace llvm;
@@ -163,37 +161,37 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
 }
 
 /* Check alias between two pointers. */
-LLVMAliasResult LLVMAlias(LLVMModuleRef ModuleRef, LLVMValueRef VRef1, LLVMValueRef VRef2){
+LLVMAliasResult LLVMBasicAAlias(LLVMModuleRef ModuleRef, char *FuncNameStr,
+                              LLVMValueRef VRef1, LLVMValueRef VRef2){
+  StringRef FuncName = llvm::StringRef(FuncNameStr);
   Value *V1 = unwrap<Value>(VRef1);
   Value *V2 = unwrap<Value>(VRef2);
 
-  // LLVMModuleProviderRef MPRef = LLVMCreateModuleProviderForExistingModule(ModuleRef);
-  // Module *M = unwrap<LLVMModuleProviderRef>(MPRef);
-
   Module &M = *unwrap(ModuleRef);
+  Function *Test = M.getFunction(FuncName);
 
   // Initialize the alias result.
   Triple Trip(M.getTargetTriple());
-  llvm::TargetLibraryInfoImpl TLII(Trip);
-  llvm::TargetLibraryInfo TLI(TLII);
-  llvm::AAResults AA(TLI);
-  llvm::DataLayout DL("e-i64:64-f80:128-n8:16:32:64-S128");
+  TargetLibraryInfoImpl TLII(Trip);
+  TargetLibraryInfo TLI(TLII);
+  AAResults AA(TLI);
+  // AliasSetTracker AST(AA);
+  DataLayout DL = M.getDataLayout();
 
-  for (auto Test = M.getFunctionList().begin(),
-         endFref = M.getFunctionList().end();
-       Test != endFref; ++Test) {
-    // Initialize the alias set tracker for the @test function.
-    // Function *Test = M->getFunction("test");
-    llvm::DominatorTree DT(*Test);
+  // Initialize the alias set tracker for the @test function.
+  llvm::DominatorTree DT(*Test);
 
-    llvm::LoopInfo LI(DT);
-    llvm::AssumptionCache AC(*Test);
+  llvm::LoopInfo LI(DT);
+  llvm::AssumptionCache AC(*Test);
 
-    llvm::BasicAAResult BAA(DL, *Test, TLI, AC, &DT);
+  llvm::BasicAAResult BAA(DL, *Test, TLI, AC, &DT);
+  AA.addAAResult(BAA);
 
-    AA.addAAResult(BAA);
 
-  }
+  // for (auto &BB : *Test)
+  //   AST.add(BB);
+
+  // AST.print(errs());
 
   AliasResult aares = AA.alias(V1, V2);
   if (aares == llvm::AliasResult::NoAlias) {
@@ -208,5 +206,6 @@ LLVMAliasResult LLVMAlias(LLVMModuleRef ModuleRef, LLVMValueRef VRef1, LLVMValue
   else{
     return LLVMMayAlias;
   }
+
   return LLVMMayAlias;
 }

@@ -68,8 +68,13 @@ LLVMBool LLVMVerifyFunction(LLVMValueRef Fn, LLVMVerifierFailureAction Action);
 void LLVMViewFunctionCFG(LLVMValueRef Fn);
 void LLVMViewFunctionCFGOnly(LLVMValueRef Fn);
 
-/* Check alias between two pointers. */
-LLVMAliasResult LLVMAlias(LLVMModuleRef Module, LLVMValueRef V1, LLVMValueRef V2);
+/* Check alias between two pointers using the basic-aa analysis.
+   Inputs are the current Module, the FuncName of the current function and the
+   two pointers V1 and V2 to be checked.
+
+   Output is a LLVMAliasResult.
+*/
+LLVMAliasResult LLVMBasicAAlias(LLVMModuleRef Module, char *FuncName, LLVMValueRef V1, LLVMValueRef V2);
 
 /**
  * @}
