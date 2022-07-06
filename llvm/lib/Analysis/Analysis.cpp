@@ -175,25 +175,15 @@ LLVMAliasResult LLVMBasicAAlias(LLVMModuleRef ModuleRef, char *FuncNameStr,
   TargetLibraryInfoImpl TLII(Trip);
   TargetLibraryInfo TLI(TLII);
   AAResults AA(TLI);
-  // AliasSetTracker AST(AA);
   DataLayout DL = M.getDataLayout();
+  DominatorTree DT(*Test);
+  LoopInfo LI(DT);
+  AssumptionCache AC(*Test);
 
-  // Initialize the alias set tracker for the @test function.
-  llvm::DominatorTree DT(*Test);
-
-  llvm::LoopInfo LI(DT);
-  llvm::AssumptionCache AC(*Test);
-
-  llvm::BasicAAResult BAA(DL, *Test, TLI, AC, &DT);
+  BasicAAResult BAA(DL, *Test, TLI, AC, &DT);
   AA.addAAResult(BAA);
-
-
-  // for (auto &BB : *Test)
-  //   AST.add(BB);
-
-  // AST.print(errs());
-
   AliasResult aares = AA.alias(V1, V2);
+
   if (aares == llvm::AliasResult::NoAlias) {
     return LLVMNoAlias;
   }
