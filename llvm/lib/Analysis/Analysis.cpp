@@ -170,7 +170,7 @@ LLVMAliasResult LLVMBasicAAlias(LLVMModuleRef ModuleRef, char *FuncNameStr,
   Module &M = *unwrap(ModuleRef);
   Function *Test = M.getFunction(FuncName);
 
-  // Initialize the alias result.
+  // Initialize the alias analysis.
   Triple Trip(M.getTargetTriple());
   TargetLibraryInfoImpl TLII(Trip);
   TargetLibraryInfo TLI(TLII);
