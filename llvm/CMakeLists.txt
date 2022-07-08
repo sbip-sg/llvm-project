@@ -731,6 +731,9 @@ set(LLVM_PROFDATA_FILE "" CACHE FILEPATH
 # first cmake run
 include(config-ix)
 
+# Add clang-format support
+include(ClangFormat)
+
 # By default, we target the host, but this can be overridden at CMake
 # invocation time. Except on 64-bit AIX, where the system toolchain
 # expect 32-bit objects by default.
