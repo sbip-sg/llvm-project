@@ -25,6 +25,7 @@ jobs:
   check_all:
     name: Test llvm,clang,libclc
     uses: llvm/llvm-project/.github/workflows/llvm-project-tests.yml@release/14.x
+    runs-on: ubuntu-latest
     with:
       build_target: check-all
       projects: clang;libclc
