@@ -37,6 +37,21 @@ typedef enum {
   LLVMReturnStatusAction  /* verifier will just return 1 */
 } LLVMVerifierFailureAction;
 
+typedef enum {
+  /// The two locations do not alias at all.
+  LLVMNoAlias,
+
+  /// The two locations may or may not alias. This is the least precise
+  /// result.
+  LLVMMayAlias,
+
+  /// The two locations precisely alias each other.
+  LLVMMustAlias,
+
+  /// The two locations alias, but only due to a partial overlap.
+  LLVMPartialAlias,
+} LLVMAliasResult;
+
 /* Verifies that a module is valid, taking the specified action if not.
    Optionally returns a human-readable description of any invalid constructs.
    OutMessage must be disposed with LLVMDisposeMessage. */
