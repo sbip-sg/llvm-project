@@ -74,7 +74,15 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn);
 
    Output is a LLVMAliasResult.
 */
-LLVMAliasResult LLVMBasicAAlias(LLVMModuleRef Module, char *FuncName, LLVMValueRef V1, LLVMValueRef V2);
+LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef Module, char *FuncName, LLVMValueRef V1, LLVMValueRef V2);
+
+/* Check alias between two pointers using the type-based alias analysis.
+   Inputs are the current Module, the FuncName of the current function and the
+   two pointers V1 and V2 to be checked.
+
+   Output is a LLVMAliasResult.
+*/
+LLVMAliasResult LLVMTypeBasedAAQuery(LLVMModuleRef Module, LLVMValueRef V1, LLVMValueRef V2);
 
 /**
  * @}
