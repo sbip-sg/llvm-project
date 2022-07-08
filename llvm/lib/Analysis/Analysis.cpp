@@ -7,33 +7,12 @@
 //===----------------------------------------------------------------------===//
 
 #include "llvm-c/Analysis.h"
-#include "llvm-c/Core.h"
 #include "llvm-c/Initialization.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Verifier.h"
 #include "llvm/InitializePasses.h"
 #include "llvm/PassRegistry.h"
 #include "llvm/Support/raw_ostream.h"
-#include "llvm/Analysis/AliasAnalysis.h"
-#include "llvm/Pass.h"
-#include "llvm/IR/Value.h"
-#include "llvm/Analysis/BasicAliasAnalysis.h"
-
-#include "llvm/IR/Function.h"
-#include "llvm/IR/IRBuilder.h"
-#include "llvm/IR/PassManager.h"
-#include "llvm/IR/Type.h"
-#include "llvm/IR/DataLayout.h"
-
-#include "llvm/Passes/PassBuilder.h"
-#include "llvm/Passes/PassPlugin.h"
-#include "llvm/Support/raw_ostream.h"
-
-#include "llvm/IR/LegacyPassManager.h"
-#include "llvm/Transforms/IPO/PassManagerBuilder.h"
-#include "llvm/Analysis/AssumptionCache.h"
-
-
 #include <cstring>
 
 using namespace llvm;
@@ -158,44 +137,4 @@ void LLVMViewFunctionCFG(LLVMValueRef Fn) {
 void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
   Function *F = unwrap<Function>(Fn);
   F->viewCFGOnly();
-}
-
-/* Check alias between two pointers. */
-LLVMAliasResult LLVMBasicAAlias(LLVMModuleRef ModuleRef, char *FuncNameStr,
-                              LLVMValueRef VRef1, LLVMValueRef VRef2){
-  StringRef FuncName = llvm::StringRef(FuncNameStr);
-  Value *V1 = unwrap<Value>(VRef1);
-  Value *V2 = unwrap<Value>(VRef2);
-
-  Module &M = *unwrap(ModuleRef);
-  Function *Test = M.getFunction(FuncName);
-
-  // Initialize the alias analysis.
-  Triple Trip(M.getTargetTriple());
-  TargetLibraryInfoImpl TLII(Trip);
-  TargetLibraryInfo TLI(TLII);
-  AAResults AA(TLI);
-  DataLayout DL = M.getDataLayout();
-  DominatorTree DT(*Test);
-  LoopInfo LI(DT);
-  AssumptionCache AC(*Test);
-
-  BasicAAResult BAA(DL, *Test, TLI, AC, &DT);
-  AA.addAAResult(BAA);
-  AliasResult aares = AA.alias(V1, V2);
-
-  if (aares == llvm::AliasResult::NoAlias) {
-    return LLVMNoAlias;
-  }
-  else if (aares == llvm::AliasResult::MayAlias) {
-    return LLVMMayAlias;
-  }
-  else if (aares == llvm::AliasResult::MustAlias) {
-    return LLVMMustAlias;
-  }
-  else{
-    return LLVMMayAlias;
-  }
-
-  return LLVMMayAlias;
 }
