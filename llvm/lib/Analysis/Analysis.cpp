@@ -8,11 +8,31 @@
 
 #include "llvm-c/Analysis.h"
 #include "llvm-c/Initialization.h"
+#include "llvm/Analysis/AliasAnalysis.h"
+#include "llvm/Analysis/BasicAliasAnalysis.h"
 #include "llvm/IR/Module.h"
+#include "llvm/IR/Value.h"
 #include "llvm/IR/Verifier.h"
 #include "llvm/InitializePasses.h"
+#include "llvm/Pass.h"
 #include "llvm/PassRegistry.h"
 #include "llvm/Support/raw_ostream.h"
+
+#include "llvm/IR/DataLayout.h"
+#include "llvm/IR/Function.h"
+#include "llvm/IR/IRBuilder.h"
+#include "llvm/IR/PassManager.h"
+#include "llvm/IR/Type.h"
+
+#include "llvm/Passes/PassBuilder.h"
+#include "llvm/Passes/PassPlugin.h"
+#include "llvm/Support/raw_ostream.h"
+
+#include "llvm/Analysis/AssumptionCache.h"
+#include "llvm/Analysis/TypeBasedAliasAnalysis.h"
+#include "llvm/IR/LegacyPassManager.h"
+#include "llvm/Transforms/IPO/PassManagerBuilder.h"
+
 #include <cstring>
 
 using namespace llvm;
@@ -119,9 +139,9 @@ LLVMBool LLVMVerifyModule(LLVMModuleRef M, LLVMVerifierFailureAction Action,
 }
 
 LLVMBool LLVMVerifyFunction(LLVMValueRef Fn, LLVMVerifierFailureAction Action) {
-  LLVMBool Result = verifyFunction(
-      *unwrap<Function>(Fn), Action != LLVMReturnStatusAction ? &errs()
-                                                              : nullptr);
+  LLVMBool Result =
+      verifyFunction(*unwrap<Function>(Fn),
+                     Action != LLVMReturnStatusAction ? &errs() : nullptr);
 
   if (Action == LLVMAbortProcessAction && Result)
     report_fatal_error("Broken function found, compilation aborted!");
@@ -137,4 +157,75 @@ void LLVMViewFunctionCFG(LLVMValueRef Fn) {
 void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
   Function *F = unwrap<Function>(Fn);
   F->viewCFGOnly();
+}
+
+/* Check alias between two pointers.
+   Using the basic alias analysis
+ */
+LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, char *FuncNameStr,
+                                 LLVMValueRef VRef1, LLVMValueRef VRef2) {
+  StringRef FuncName = llvm::StringRef(FuncNameStr);
+  Value *V1 = unwrap<Value>(VRef1);
+  Value *V2 = unwrap<Value>(VRef2);
+  Module &M = *unwrap(ModuleRef);
+  Function *Func = M.getFunction(FuncName);
+
+  // Initialize the alias analysis.
+  Triple Trip(M.getTargetTriple());
+  TargetLibraryInfoImpl TLII(Trip);
+  TargetLibraryInfo TLI(TLII);
+  AAResults AA(TLI);
+  DataLayout DL = M.getDataLayout();
+  DominatorTree DT(*Func);
+  LoopInfo LI(DT);
+  AssumptionCache AC(*Func);
+
+  BasicAAResult BAA(DL, *Func, TLI, AC, &DT);
+  AA.addAAResult(BAA);
+  AliasResult aares = AA.alias(V1, V2);
+
+  if (aares == llvm::AliasResult::NoAlias) {
+    return LLVMNoAlias;
+  } else if (aares == llvm::AliasResult::MayAlias) {
+    return LLVMMayAlias;
+  } else if (aares == llvm::AliasResult::MustAlias) {
+    return LLVMMustAlias;
+  } else {
+    return LLVMMayAlias;
+  }
+
+  return LLVMMayAlias;
+}
+
+/* Check alias between two pointers.
+   Using the typed-based alias analysis
+ */
+LLVMAliasResult LLVMTypeBasedAAQuery(LLVMModuleRef ModuleRef,
+                                     LLVMValueRef VRef1, LLVMValueRef VRef2) {
+  Value *V1 = unwrap<Value>(VRef1);
+  Value *V2 = unwrap<Value>(VRef2);
+  Module &M = *unwrap(ModuleRef);
+
+  // Initialize the alias analysis.
+  Triple Trip(M.getTargetTriple());
+  TargetLibraryInfoImpl TLII(Trip);
+  TargetLibraryInfo TLI(TLII);
+  AAResults AA(TLI);
+
+  TypeBasedAAResult TBAAR;
+  AA.addAAResult(TBAAR);
+
+  AliasResult aares = AA.alias(V1, V2);
+
+  if (aares == llvm::AliasResult::NoAlias) {
+    return LLVMNoAlias;
+  } else if (aares == llvm::AliasResult::MayAlias) {
+    return LLVMMayAlias;
+  } else if (aares == llvm::AliasResult::MustAlias) {
+    return LLVMMustAlias;
+  } else {
+    return LLVMMayAlias;
+  }
+
+  return LLVMMayAlias;
 }

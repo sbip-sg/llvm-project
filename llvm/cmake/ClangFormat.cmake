@@ -6,8 +6,18 @@
 ####################################################################
 
 file(GLOB_RECURSE SOURCE_FILES
-  ${PROJECT_SOURCE_DIR}/src/*.cpp
-  ${PROJECT_SOURCE_DIR}/src/*.h)
+  ${LLVM_MAIN_SRC_DIR}/include/*/*.h
+  ${LLVM_MAIN_SRC_DIR}/include/*/*.h
+  ${LLVM_MAIN_SRC_DIR}/include/*/*/*.h
+  ${LLVM_MAIN_SRC_DIR}/lib/*/*.h
+  ${LLVM_MAIN_SRC_DIR}/lib/*/*.cpp
+  ${LLVM_MAIN_SRC_DIR}/lib/*/*.h
+  ${LLVM_MAIN_SRC_DIR}/lib/*/*.cpp
+  ${LLVM_MAIN_SRC_DIR}/lib/*/*/*.h
+  ${LLVM_MAIN_SRC_DIR}/lib/*/*/*.cpp
+  ${LLVM_MAIN_SRC_DIR}/lib/*/*/*/*.h
+  ${LLVM_MAIN_SRC_DIR}/lib/*/*/*/*.cpp
+  )
 
 # # debugging
 # foreach (FILE ${SOURCE_FILES})

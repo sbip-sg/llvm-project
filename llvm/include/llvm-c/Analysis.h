@@ -37,6 +37,20 @@ typedef enum {
   LLVMReturnStatusAction  /* verifier will just return 1 */
 } LLVMVerifierFailureAction;
 
+typedef enum {
+  /// The two locations do not alias at all.
+  LLVMNoAlias,
+
+  /// The two locations may or may not alias. This is the least precise
+  /// result.
+  LLVMMayAlias,
+
+  /// The two locations precisely alias each other.
+  LLVMMustAlias,
+
+  /// The two locations alias, but only due to a partial overlap.
+  LLVMPartialAlias,
+} LLVMAliasResult;
 
 /* Verifies that a module is valid, taking the specified action if not.
    Optionally returns a human-readable description of any invalid constructs.
@@ -52,6 +66,24 @@ LLVMBool LLVMVerifyFunction(LLVMValueRef Fn, LLVMVerifierFailureAction Action);
    Useful for debugging. */
 void LLVMViewFunctionCFG(LLVMValueRef Fn);
 void LLVMViewFunctionCFGOnly(LLVMValueRef Fn);
+
+/* Check alias between two pointers using the basic-aa analysis.
+   Inputs are the current Module, the FuncName of the current function and the
+   two pointers V1 and V2 to be checked.
+
+   Output is a LLVMAliasResult.
+*/
+LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef Module, char *FuncName,
+                                 LLVMValueRef V1, LLVMValueRef V2);
+
+/* Check alias between two pointers using the type-based alias analysis.
+   Inputs are the current Module, the FuncName of the current function and the
+   two pointers V1 and V2 to be checked.
+
+   Output is a LLVMAliasResult.
+*/
+LLVMAliasResult LLVMTypeBasedAAQuery(LLVMModuleRef Module, LLVMValueRef V1,
+                                     LLVMValueRef V2);
 
 /**
  * @}
