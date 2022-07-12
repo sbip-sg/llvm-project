@@ -3264,6 +3264,30 @@ LLVMValueRef LLVMInstructionClone(LLVMValueRef Inst);
 LLVMValueRef LLVMIsATerminatorInst(LLVMValueRef Inst);
 
 /**
+ * @defgroup LLVMCCoreValueInstructionBinary Binary Operator
+ *
+ * Functions in this group only apply to instructions for which
+ * LLVMIsABinaryOperator returns true.
+ *
+ * @{
+ */
+
+/**
+ * @see llvm::OverflowingBinaryOperator::hasNoUnsignedWrap()
+ */
+LLVMBool LLVMHasNoUnsignedWrap(LLVMValueRef Inst);
+
+/**
+ * @see llvm::OverflowingBinaryOperator::hasNoSignedWrap()
+ */
+LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst);
+
+/**
+ * @}
+ */
+
+
+/**
  * @defgroup LLVMCCoreValueInstructionCall Call Sites and Invocations
  *
  * Functions in this group apply to instructions that refer to call

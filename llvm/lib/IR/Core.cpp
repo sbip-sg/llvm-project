@@ -2873,6 +2873,26 @@ unsigned LLVMGetNumArgOperands(LLVMValueRef Instr) {
   return unwrap<CallBase>(Instr)->arg_size();
 }
 
+/*--.. Binary instructions .................................................--*/
+
+LLVMBool LLVMHasNoUnsignedWrap(LLVMValueRef Inst) {
+  if (OverflowingBinaryOperator *I =
+      dyn_cast<OverflowingBinaryOperator>(unwrap(Inst))) {
+    return I->hasNoUnsignedWrap();
+  }
+
+  return false;
+}
+
+LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst) {
+  if (OverflowingBinaryOperator *I =
+      dyn_cast<OverflowingBinaryOperator>(unwrap(Inst))) {
+    return I->hasNoSignedWrap();
+  }
+
+  return false;
+}
+
 /*--.. Call and invoke instructions ........................................--*/
 
 unsigned LLVMGetInstructionCallConv(LLVMValueRef Instr) {
