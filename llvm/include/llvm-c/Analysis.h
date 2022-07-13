@@ -73,7 +73,7 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn);
 
    Output is a LLVMAliasResult.
 */
-LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef Module, char *FuncName,
+LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef Module, const char *FuncName,
                                  LLVMValueRef V1, LLVMValueRef V2);
 
 /* Check alias between two pointers using the type-based alias analysis.

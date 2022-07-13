@@ -162,7 +162,7 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
 /* Check alias between two pointers.
    Using the basic alias analysis
  */
-LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, char *FuncNameStr,
+LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *FuncNameStr,
                                  LLVMValueRef VRef1, LLVMValueRef VRef2) {
   Module *M = unwrap(ModuleRef);
   SMDiagnostic Err;
@@ -188,6 +188,7 @@ LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, char *FuncNameStr,
 
   BasicAAResult BAA(DL, *Func, TLI, AC, &DT);
   AA.addAAResult(BAA);
+
   AliasResult aares = AA.alias(V1, V2);
 
   if (aares == llvm::AliasResult::NoAlias) {
