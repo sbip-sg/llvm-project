@@ -164,18 +164,24 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
  */
 LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, char *FuncNameStr,
                                  LLVMValueRef VRef1, LLVMValueRef VRef2) {
+  Module *M = unwrap(ModuleRef);
+  SMDiagnostic Err;
+  if (!M)
+    Err.print("LLVMBasicAAQuery failed", errs());
+
   StringRef FuncName = llvm::StringRef(FuncNameStr);
   Value *V1 = unwrap<Value>(VRef1);
   Value *V2 = unwrap<Value>(VRef2);
-  Module &M = *unwrap(ModuleRef);
-  Function *Func = M.getFunction(FuncName);
+
+
+  Function *Func = M->getFunction(FuncName);
 
   // Initialize the alias analysis.
-  Triple Trip(M.getTargetTriple());
+  Triple Trip(M->getTargetTriple());
   TargetLibraryInfoImpl TLII(Trip);
   TargetLibraryInfo TLI(TLII);
   AAResults AA(TLI);
-  DataLayout DL = M.getDataLayout();
+  DataLayout DL = M->getDataLayout();
   DominatorTree DT(*Func);
   LoopInfo LI(DT);
   AssumptionCache AC(*Func);
@@ -202,12 +208,16 @@ LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, char *FuncNameStr,
  */
 LLVMAliasResult LLVMTypeBasedAAQuery(LLVMModuleRef ModuleRef,
                                      LLVMValueRef VRef1, LLVMValueRef VRef2) {
+  Module *M = unwrap(ModuleRef);
+  SMDiagnostic Err;
+  if (!M)
+    Err.print("LLVMTypeBasedAAQuery failed", errs());
+
   Value *V1 = unwrap<Value>(VRef1);
   Value *V2 = unwrap<Value>(VRef2);
-  Module &M = *unwrap(ModuleRef);
 
   // Initialize the alias analysis.
-  Triple Trip(M.getTargetTriple());
+  Triple Trip(M->getTargetTriple());
   TargetLibraryInfoImpl TLII(Trip);
   TargetLibraryInfo TLI(TLII);
   AAResults AA(TLI);
