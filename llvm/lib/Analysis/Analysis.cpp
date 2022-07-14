@@ -159,7 +159,8 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
   F->viewCFGOnly();
 }
 
-/* Check alias between two pointers.
+/* SBIP LLVM Project.
+   Check alias between two pointers.
    Using the basic alias analysis
  */
 LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *FuncNameStr,
@@ -204,7 +205,8 @@ LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *FuncNameSt
   return LLVMMayAlias;
 }
 
-/* Check alias between two pointers.
+/* SBIP LLVM Project.
+   Check alias between two pointers.
    Using the typed-based alias analysis
  */
 LLVMAliasResult LLVMTypeBasedAAQuery(LLVMModuleRef ModuleRef,
