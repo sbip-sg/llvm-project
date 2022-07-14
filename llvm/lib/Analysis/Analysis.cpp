@@ -163,7 +163,7 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
    Check alias between two pointers.
    Using the basic alias analysis
  */
-LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *FuncNameStr,
+LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, char *FuncNameStr,
                                  LLVMValueRef VRef1, LLVMValueRef VRef2) {
   Module *M = unwrap(ModuleRef);
   SMDiagnostic Err;
