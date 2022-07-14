@@ -75,6 +75,7 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn);
    Output is a LLVMAliasResult.
 */
 LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef Module, const char *FuncName,
+                                 size_t SLen,
                                  LLVMValueRef V1, LLVMValueRef V2);
 
 /* SBIP LLVM Project.
