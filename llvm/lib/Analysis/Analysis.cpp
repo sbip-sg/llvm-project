@@ -163,44 +163,44 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
    Check alias between two pointers.
    Using the basic alias analysis
  */
-LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, char *FuncNameStr,
+LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *FuncNameStr,
                                  LLVMValueRef VRef1, LLVMValueRef VRef2) {
-  Module *M = unwrap(ModuleRef);
-  SMDiagnostic Err;
-  if (!M)
-    Err.print("LLVMBasicAAQuery failed", errs());
+  // Module *M = unwrap(ModuleRef);
+  // SMDiagnostic Err;
+  // if (!M)
+  //   Err.print("LLVMBasicAAQuery failed", errs());
 
-  StringRef FuncName = llvm::StringRef(FuncNameStr);
-  Value *V1 = unwrap<Value>(VRef1);
-  Value *V2 = unwrap<Value>(VRef2);
+  // StringRef FuncName = llvm::StringRef(FuncNameStr);
+  // Value *V1 = unwrap<Value>(VRef1);
+  // Value *V2 = unwrap<Value>(VRef2);
 
 
-  Function *Func = M->getFunction(FuncName);
+  // Function *Func = M->getFunction(FuncName);
 
-  // Initialize the alias analysis.
-  Triple Trip(M->getTargetTriple());
-  TargetLibraryInfoImpl TLII(Trip);
-  TargetLibraryInfo TLI(TLII);
-  AAResults AA(TLI);
-  DataLayout DL = M->getDataLayout();
-  DominatorTree DT(*Func);
-  LoopInfo LI(DT);
-  AssumptionCache AC(*Func);
+  // // Initialize the alias analysis.
+  // Triple Trip(M->getTargetTriple());
+  // TargetLibraryInfoImpl TLII(Trip);
+  // TargetLibraryInfo TLI(TLII);
+  // AAResults AA(TLI);
+  // DataLayout DL = M->getDataLayout();
+  // DominatorTree DT(*Func);
+  // LoopInfo LI(DT);
+  // AssumptionCache AC(*Func);
 
-  BasicAAResult BAA(DL, *Func, TLI, AC, &DT);
-  AA.addAAResult(BAA);
+  // BasicAAResult BAA(DL, *Func, TLI, AC, &DT);
+  // AA.addAAResult(BAA);
 
-  AliasResult aares = AA.alias(V1, V2);
+  // AliasResult aares = AA.alias(V1, V2);
 
-  if (aares == llvm::AliasResult::NoAlias) {
-    return LLVMNoAlias;
-  } else if (aares == llvm::AliasResult::MayAlias) {
-    return LLVMMayAlias;
-  } else if (aares == llvm::AliasResult::MustAlias) {
-    return LLVMMustAlias;
-  } else {
-    return LLVMMayAlias;
-  }
+  // if (aares == llvm::AliasResult::NoAlias) {
+  //   return LLVMNoAlias;
+  // } else if (aares == llvm::AliasResult::MayAlias) {
+  //   return LLVMMayAlias;
+  // } else if (aares == llvm::AliasResult::MustAlias) {
+  //   return LLVMMustAlias;
+  // } else {
+  //   return LLVMMayAlias;
+  // }
 
   return LLVMMayAlias;
 }
