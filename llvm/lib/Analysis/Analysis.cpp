@@ -159,29 +159,39 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
   F->viewCFGOnly();
 }
 
-/* Check alias between two pointers.
+/* SBIP LLVM Project.
+   Check alias between two pointers.
    Using the basic alias analysis
  */
-LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, char *FuncNameStr,
-                                 LLVMValueRef VRef1, LLVMValueRef VRef2) {
-  StringRef FuncName = llvm::StringRef(FuncNameStr);
+LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *Name,
+                                 size_t SLen, LLVMValueRef VRef1,
+                                 LLVMValueRef VRef2) {
+  StringRef FuncName = StringRef(Name, SLen);
+  Module *M = unwrap(ModuleRef);
+  SMDiagnostic Err;
+  if (!M) {
+    return LLVMMayAlias;
+  }
+
   Value *V1 = unwrap<Value>(VRef1);
   Value *V2 = unwrap<Value>(VRef2);
-  Module &M = *unwrap(ModuleRef);
-  Function *Func = M.getFunction(FuncName);
+
+  Function *Func = M->getFunction(FuncName);
 
   // Initialize the alias analysis.
-  Triple Trip(M.getTargetTriple());
+  Triple Trip(M->getTargetTriple());
   TargetLibraryInfoImpl TLII(Trip);
   TargetLibraryInfo TLI(TLII);
   AAResults AA(TLI);
-  DataLayout DL = M.getDataLayout();
+  DataLayout DL = M->getDataLayout();
+  //
   DominatorTree DT(*Func);
   LoopInfo LI(DT);
   AssumptionCache AC(*Func);
 
   BasicAAResult BAA(DL, *Func, TLI, AC, &DT);
   AA.addAAResult(BAA);
+
   AliasResult aares = AA.alias(V1, V2);
 
   if (aares == llvm::AliasResult::NoAlias) {
@@ -197,17 +207,22 @@ LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, char *FuncNameStr,
   return LLVMMayAlias;
 }
 
-/* Check alias between two pointers.
+/* SBIP LLVM Project.
+   Check alias between two pointers.
    Using the typed-based alias analysis
  */
 LLVMAliasResult LLVMTypeBasedAAQuery(LLVMModuleRef ModuleRef,
                                      LLVMValueRef VRef1, LLVMValueRef VRef2) {
+  Module *M = unwrap(ModuleRef);
+  SMDiagnostic Err;
+  if (!M)
+    Err.print("LLVMTypeBasedAAQuery failed", errs());
+
   Value *V1 = unwrap<Value>(VRef1);
   Value *V2 = unwrap<Value>(VRef2);
-  Module &M = *unwrap(ModuleRef);
 
   // Initialize the alias analysis.
-  Triple Trip(M.getTargetTriple());
+  Triple Trip(M->getTargetTriple());
   TargetLibraryInfoImpl TLII(Trip);
   TargetLibraryInfo TLI(TLII);
   AAResults AA(TLI);
