@@ -159,10 +159,10 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
   F->viewCFGOnly();
 }
 
-/* SBIP LLVM Project.
-   Check alias between two pointers.
-   Using the basic alias analysis
- */
+/// Check alias between two pointers using the basic alias analysis.
+///
+/// This function is added as a part of LLVM-SBIP customized version.
+/// Note: remove the above line when merge back to LLVM Official.
 LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *Name,
                                  size_t SLen, LLVMValueRef VRef1,
                                  LLVMValueRef VRef2) {
@@ -170,7 +170,7 @@ LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *Name,
   Module *M = unwrap(ModuleRef);
   SMDiagnostic Err;
   if (!M) {
-    return LLVMMayAlias;
+    Err.print("LLVMBasicAAQuery failed: ", errs());
   }
 
   Value *V1 = unwrap<Value>(VRef1);
@@ -184,14 +184,13 @@ LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *Name,
   TargetLibraryInfo TLI(TLII);
   AAResults AA(TLI);
   DataLayout DL = M->getDataLayout();
-  //
   DominatorTree DT(*Func);
   LoopInfo LI(DT);
   AssumptionCache AC(*Func);
-
   BasicAAResult BAA(DL, *Func, TLI, AC, &DT);
   AA.addAAResult(BAA);
 
+  // Checking aliasing relation
   AliasResult aares = AA.alias(V1, V2);
 
   if (aares == llvm::AliasResult::NoAlias) {
@@ -200,23 +199,23 @@ LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *Name,
     return LLVMMayAlias;
   } else if (aares == llvm::AliasResult::MustAlias) {
     return LLVMMustAlias;
-  } else {
-    return LLVMMayAlias;
   }
 
+  // Return LLVMMayAlias by default.
   return LLVMMayAlias;
 }
 
-/* SBIP LLVM Project.
-   Check alias between two pointers.
-   Using the typed-based alias analysis
- */
+/// Check alias between two pointers using the type-based alias analysis.
+///
+/// This function is added as a part of LLVM-SBIP customized version.
+/// Note: remove the above line when merge back to LLVM Official.
 LLVMAliasResult LLVMTypeBasedAAQuery(LLVMModuleRef ModuleRef,
                                      LLVMValueRef VRef1, LLVMValueRef VRef2) {
   Module *M = unwrap(ModuleRef);
   SMDiagnostic Err;
-  if (!M)
-    Err.print("LLVMTypeBasedAAQuery failed", errs());
+  if (!M) {
+    Err.print("LLVMTypeBasedAAQuery failed: ", errs());
+  }
 
   Value *V1 = unwrap<Value>(VRef1);
   Value *V2 = unwrap<Value>(VRef2);
@@ -226,10 +225,10 @@ LLVMAliasResult LLVMTypeBasedAAQuery(LLVMModuleRef ModuleRef,
   TargetLibraryInfoImpl TLII(Trip);
   TargetLibraryInfo TLI(TLII);
   AAResults AA(TLI);
-
   TypeBasedAAResult TBAAR;
   AA.addAAResult(TBAAR);
 
+  // Checking aliasing relation
   AliasResult aares = AA.alias(V1, V2);
 
   if (aares == llvm::AliasResult::NoAlias) {
@@ -238,9 +237,8 @@ LLVMAliasResult LLVMTypeBasedAAQuery(LLVMModuleRef ModuleRef,
     return LLVMMayAlias;
   } else if (aares == llvm::AliasResult::MustAlias) {
     return LLVMMustAlias;
-  } else {
-    return LLVMMayAlias;
   }
 
+  // Return LLVMMayAlias by default
   return LLVMMayAlias;
 }
