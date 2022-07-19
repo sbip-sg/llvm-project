@@ -36,6 +36,7 @@
 #include "llvm/Support/MemoryBuffer.h"
 #include "llvm/Support/Threading.h"
 #include "llvm/Support/raw_ostream.h"
+#include "llvm/IR/Metadata.h"
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
@@ -2891,6 +2892,34 @@ LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst) {
   }
 
   return false;
+}
+
+int LLVMGetSignInfo(LLVMValueRef Inst){
+  DbgDeclareInst* dbg_declare_inst = dyn_cast<DbgDeclareInst>(unwrap(Inst));
+  if (!dbg_declare_inst) {
+    return -1;
+  }
+
+  DILocalVariable* local_var = dbg_declare_inst->getVariable();
+
+  DIType* type_info = local_var->getType();
+
+  DIBasicType* basic_type_info = dyn_cast<DIBasicType>(type_info);
+
+  if (!basic_type_info) {
+    return -1;
+  }
+
+  switch (basic_type_info->getEncoding()) {
+  case dwarf::DW_ATE_signed:
+  case dwarf::DW_ATE_signed_char:
+    return 1;
+  case dwarf::DW_ATE_unsigned:
+  case dwarf::DW_ATE_unsigned_char:
+    return 0;
+  default:
+    return -1;
+  }
 }
 
 /*--.. Call and invoke instructions ........................................--*/
