@@ -2860,23 +2860,21 @@ LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst) {
   return false;
 }
 
-int LLVMGetSignInfo(LLVMValueRef Inst) {
-  DbgDeclareInst *dbg_declare_inst = dyn_cast<DbgDeclareInst>(unwrap(Inst));
-  if (!dbg_declare_inst) {
+int LLVMGetSignednessInfo(LLVMValueRef Inst) {
+  DbgDeclareInst *DDI = dyn_cast<DbgDeclareInst>(unwrap(Inst));
+  if (!DDI) {
     return -1;
   }
 
-  DILocalVariable *local_var = dbg_declare_inst->getVariable();
+  DILocalVariable *LocalVar = DDI->getVariable();
+  DIType *Type = LocalVar->getType();
+  DIBasicType *BasicType = dyn_cast<DIBasicType>(Type);
 
-  DIType *type_info = local_var->getType();
-
-  DIBasicType *basic_type_info = dyn_cast<DIBasicType>(type_info);
-
-  if (!basic_type_info) {
+  if (!BasicType) {
     return -1;
   }
 
-  switch (basic_type_info->getEncoding()) {
+  switch (BasicType->getEncoding()) {
   case dwarf::DW_ATE_signed:
   case dwarf::DW_ATE_signed_char:
     return 1;
