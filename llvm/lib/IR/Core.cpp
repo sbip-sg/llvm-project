@@ -2893,6 +2893,34 @@ LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst) {
   return false;
 }
 
+
+/*--.. Get signedness of instructions ......................................--*/
+int LLVMGetSignednessInfo(LLVMValueRef Inst) {
+  DbgDeclareInst *DDI = dyn_cast<DbgDeclareInst>(unwrap(Inst));
+  if (!DDI) {
+    return -1;
+  }
+
+  DILocalVariable *LocalVar = DDI->getVariable();
+  DIType *Type = LocalVar->getType();
+  DIBasicType *BasicType = dyn_cast<DIBasicType>(Type);
+
+  if (!BasicType) {
+    return -1;
+  }
+
+  switch (BasicType->getEncoding()) {
+  case dwarf::DW_ATE_signed:
+  case dwarf::DW_ATE_signed_char:
+    return 1;
+  case dwarf::DW_ATE_unsigned:
+  case dwarf::DW_ATE_unsigned_char:
+    return 0;
+  default:
+    return -1;
+  }
+}
+
 /*--.. Call and invoke instructions ........................................--*/
 
 unsigned LLVMGetInstructionCallConv(LLVMValueRef Instr) {

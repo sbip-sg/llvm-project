@@ -3286,6 +3286,11 @@ LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst);
  * @}
  */
 
+/**
+ * Decide whether the instruction *Inst* is a signed/unsigned integer
+ * Output: -1 means no sign information, 0 is unsigned, 1 is signed
+ */
+int LLVMGetSignednessInfo(LLVMValueRef Inst);
 
 /**
  * @defgroup LLVMCCoreValueInstructionCall Call Sites and Invocations
