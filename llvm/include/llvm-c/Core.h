@@ -3293,6 +3293,11 @@ LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst);
 int LLVMGetSignednessInfo(LLVMValueRef Inst);
 
 /**
+ * Get the variable in the llvm.dbg.declare instructions.
+ */
+LLVMValueRef LLVMGetDbgDeclareVar(LLVMValueRef Inst);
+
+/**
  * @defgroup LLVMCCoreValueInstructionCall Call Sites and Invocations
  *
  * Functions in this group apply to instructions that refer to call

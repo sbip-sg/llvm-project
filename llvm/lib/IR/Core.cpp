@@ -2921,6 +2921,17 @@ int LLVMGetSignednessInfo(LLVMValueRef Inst) {
   }
 }
 
+/*-- Get the variable in the llvm.dbg.declare instructions .................--*/
+LLVMValueRef LLVMGetDbgDeclareVar(LLVMValueRef Inst) {
+  DbgDeclareInst *DDI = dyn_cast<DbgDeclareInst>(unwrap(Inst));
+  if (!DDI) {
+    return nullptr;
+  }
+
+  Value *value = DDI->getAddress();
+  return wrap(value);
+}
+
 /*--.. Call and invoke instructions ........................................--*/
 
 unsigned LLVMGetInstructionCallConv(LLVMValueRef Instr) {
