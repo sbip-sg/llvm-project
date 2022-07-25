@@ -161,8 +161,8 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn) {
 
 /// Check alias between two pointers using the basic alias analysis.
 ///
-/// This function is added as a part of LLVM-SBIP customized version.
-/// Note: remove the above line when merge back to LLVM Official.
+/// Note: this function is added as a part of LLVM-SBIP customized version.
+/// Remove the above comment and this line merge back to the official LLVM.
 LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *Name,
                                  size_t SLen, LLVMValueRef VRef1,
                                  LLVMValueRef VRef2) {
@@ -207,8 +207,8 @@ LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef ModuleRef, const char *Name,
 
 /// Check alias between two pointers using the type-based alias analysis.
 ///
-/// This function is added as a part of LLVM-SBIP customized version.
-/// Note: remove the above line when merge back to LLVM Official.
+/// Note: this function is added as a part of LLVM-SBIP customized version.
+/// Remove the above comment and this line merge back to the official LLVM.
 LLVMAliasResult LLVMTypeBasedAAQuery(LLVMModuleRef ModuleRef,
                                      LLVMValueRef VRef1, LLVMValueRef VRef2) {
   Module *M = unwrap(ModuleRef);

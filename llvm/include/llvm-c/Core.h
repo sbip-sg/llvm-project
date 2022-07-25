@@ -3273,14 +3273,18 @@ LLVMValueRef LLVMIsATerminatorInst(LLVMValueRef Inst);
  */
 
 /**
- * SBIP LLVM Project.
  * @see llvm::OverflowingBinaryOperator::hasNoUnsignedWrap()
+ *
+ * Note: this function is added as a part of LLVM-SBIP customized version.
+ * Remove the above comment and this line merge back to the official LLVM.
  */
 LLVMBool LLVMHasNoUnsignedWrap(LLVMValueRef Inst);
 
 /**
- * SBIP LLVM Project.
  * @see llvm::OverflowingBinaryOperator::hasNoSignedWrap()
+ *
+ * Note: this function is added as a part of LLVM-SBIP customized version.
+ * Remove the above comment and this line merge back to the official LLVM.
  */
 LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst);
 
@@ -3289,15 +3293,19 @@ LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst);
  */
 
 /**
- * SBIP LLVM Project.
  * Decide whether the instruction *Inst* is a signed/unsigned integer
  * Output: -1 means no sign information, 0 is unsigned, 1 is signed
+ *
+ * Note: this function is added as a part of LLVM-SBIP customized version.
+ * Remove the above comment and this line merge back to the official LLVM.
  */
 int LLVMGetSignednessInfo(LLVMValueRef Inst);
 
 /**
- * SBIP LLVM Project.
  * Get the variable in the llvm.dbg.declare instructions.
+ *
+ * Note: this function is added as a part of LLVM-SBIP customized version.
+ * Remove the above comment and this line merge back to the official LLVM.
  */
 LLVMValueRef LLVMGetDbgDeclareVar(LLVMValueRef Inst);
 
