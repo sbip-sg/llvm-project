@@ -2875,6 +2875,8 @@ unsigned LLVMGetNumArgOperands(LLVMValueRef Instr) {
 
 /*--.. Binary instructions .................................................--*/
 
+/// This function is added as a part of LLVM-SBIP customized version.
+/// Note: remove the above line when merge back to LLVM Official.
 LLVMBool LLVMHasNoUnsignedWrap(LLVMValueRef Inst) {
   if (OverflowingBinaryOperator *I =
       dyn_cast<OverflowingBinaryOperator>(unwrap(Inst))) {
@@ -2884,6 +2886,8 @@ LLVMBool LLVMHasNoUnsignedWrap(LLVMValueRef Inst) {
   return false;
 }
 
+/// This function is added as a part of LLVM-SBIP customized version.
+/// Note: remove the above line when merge back to LLVM Official.
 LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst) {
   if (OverflowingBinaryOperator *I =
       dyn_cast<OverflowingBinaryOperator>(unwrap(Inst))) {
@@ -2894,7 +2898,10 @@ LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst) {
 }
 
 
-/*--.. Get signedness of instructions ......................................--*/
+/*--.. Get signedness information of instructions ..........................--*/
+/// Get the variable in the llvm.dbg.declare instructions.
+/// This function is added as a part of LLVM-SBIP customized version.
+/// Note: remove the above line when merge back to LLVM Official.
 int LLVMGetSignednessInfo(LLVMValueRef Inst) {
   DbgDeclareInst *DDI = dyn_cast<DbgDeclareInst>(unwrap(Inst));
   if (!DDI) {
@@ -2919,6 +2926,19 @@ int LLVMGetSignednessInfo(LLVMValueRef Inst) {
   default:
     return -1;
   }
+}
+
+/// Get the variable in the llvm.dbg.declare instructions
+/// This function is added as a part of LLVM-SBIP customized version.
+/// Note: remove the above line when merge back to LLVM Official.
+LLVMValueRef LLVMGetDbgDeclareVar(LLVMValueRef Inst) {
+  DbgDeclareInst *DDI = dyn_cast<DbgDeclareInst>(unwrap(Inst));
+  if (!DDI) {
+    return nullptr;
+  }
+
+  Value *value = DDI->getAddress();
+  return wrap(value);
 }
 
 /*--.. Call and invoke instructions ........................................--*/
