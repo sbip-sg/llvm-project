@@ -1414,6 +1414,17 @@ double LLVMConstRealGetDouble(LLVMValueRef ConstantVal, LLVMBool *LosesInfo) {
   return APF.convertToDouble();
 }
 
+unsigned LLVMAPIntGetNumWords(LLVMValueRef ConstantVal) {
+  APInt *apInt = unwrap<APInt>(ConstantVal);
+  return apInt->getNumWords();
+}
+
+const uint64_t* LLVMAPIntGetAllWords(LLVMValueRef ConstantVal) {
+  APInt *apInt = unwrap<APInt>(ConstantVal);
+  return apInt->getAllWords();
+}
+
+
 /*--.. Operations on composite constants ...................................--*/
 
 LLVMValueRef LLVMConstStringInContext(LLVMContextRef C, const char *Str,

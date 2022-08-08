@@ -73,8 +73,8 @@ void LLVMViewFunctionCFGOnly(LLVMValueRef Fn);
 
    Output is a LLVMAliasResult.
 
-   Note: this function is added as a part of LLVM-SBIP customized version.
-   Remove the above comment and this line merge back to the official LLVM.
+   NOTE: this function is added as a part of LLVM-SBIP customized version.
+   It will be merged back to the official LLVM in the future.
 */
 LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef Module, const char *FuncName,
                                  size_t SLen, LLVMValueRef V1, LLVMValueRef V2);
@@ -85,8 +85,8 @@ LLVMAliasResult LLVMBasicAAQuery(LLVMModuleRef Module, const char *FuncName,
 
    Output is a LLVMAliasResult.
 
-   Note: this function is added as a part of LLVM-SBIP customized version.
-   Remove the above comment and this line merge back to the official LLVM.
+   NOTE: this function is added as a part of LLVM-SBIP customized version.
+   It will be merged back to the official LLVM in the future.
 */
 LLVMAliasResult LLVMTypeBasedAAQuery(LLVMModuleRef Module, LLVMValueRef V1,
                                      LLVMValueRef V2);

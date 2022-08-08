@@ -2006,6 +2006,24 @@ long long LLVMConstIntGetSExtValue(LLVMValueRef ConstantVal);
 double LLVMConstRealGetDouble(LLVMValueRef ConstantVal, LLVMBool *losesInfo);
 
 /**
+ * Obtain the number of words (64-bit word) of the arbitrary precision integer
+ * value.
+ *
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
+ */
+unsigned LLVMAPIntGetNumWords(LLVMValueRef ConstantVal);
+
+/**
+ * Obtain the list of words (64-bit word) of the arbitrary precision integer
+ * value.
+ *
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
+ */
+const uint64_t* LLVMAPIntGetAllWords(LLVMValueRef ConstantVal);
+
+/**
  * @}
  */
 
@@ -3275,16 +3293,16 @@ LLVMValueRef LLVMIsATerminatorInst(LLVMValueRef Inst);
 /**
  * @see llvm::OverflowingBinaryOperator::hasNoUnsignedWrap()
  *
- * Note: this function is added as a part of LLVM-SBIP customized version.
- * Remove the above comment and this line merge back to the official LLVM.
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
  */
 LLVMBool LLVMHasNoUnsignedWrap(LLVMValueRef Inst);
 
 /**
  * @see llvm::OverflowingBinaryOperator::hasNoSignedWrap()
  *
- * Note: this function is added as a part of LLVM-SBIP customized version.
- * Remove the above comment and this line merge back to the official LLVM.
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
  */
 LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst);
 
@@ -3296,16 +3314,16 @@ LLVMBool LLVMHasNoSignedWrap(LLVMValueRef Inst);
  * Decide whether the instruction *Inst* is a signed/unsigned integer
  * Output: -1 means no sign information, 0 is unsigned, 1 is signed
  *
- * Note: this function is added as a part of LLVM-SBIP customized version.
- * Remove the above comment and this line merge back to the official LLVM.
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
  */
 int LLVMGetSignednessInfo(LLVMValueRef Inst);
 
 /**
  * Get the variable in the llvm.dbg.declare instructions.
  *
- * Note: this function is added as a part of LLVM-SBIP customized version.
- * Remove the above comment and this line merge back to the official LLVM.
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
  */
 LLVMValueRef LLVMGetDbgDeclareVar(LLVMValueRef Inst);
 

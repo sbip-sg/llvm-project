@@ -1418,6 +1418,21 @@ public:
   /// \returns the number of words to hold the integer value of this APInt.
   unsigned getNumWords() const { return getNumWords(BitWidth); }
 
+  /// Get all words of the arbitrary precision integer.
+  ///
+  /// \returns all words of the arbitrary precision integer.
+  ///
+  /// NOTE: this function is added as a part of LLVM-SBIP customized version.
+  /// It will be merged back to the official LLVM in the future.
+  const uint64_t* getAllWords() const {
+    if (isSingleWord()) {
+      return &U.VAL;
+    }
+    else {
+      return U.pVal;
+    }
+  }
+
   /// Get the number of words.
   ///
   /// *NOTE* Here one word's bitwidth equals to that of uint64_t.
