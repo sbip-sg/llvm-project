@@ -1415,13 +1415,17 @@ double LLVMConstRealGetDouble(LLVMValueRef ConstantVal, LLVMBool *LosesInfo) {
 }
 
 unsigned LLVMAPIntGetNumWords(LLVMValueRef ConstantVal) {
-  APInt *apInt = unwrap<APInt>(ConstantVal);
-  return apInt->getNumWords();
+  ConstantInt *cInt = unwrap<ConstantInt>(ConstantVal);
+  const APInt &apInt = cInt->getValue();
+  return apInt.getNumWords();
 }
 
-const uint64_t* LLVMAPIntGetAllWords(LLVMValueRef ConstantVal) {
-  APInt *apInt = unwrap<APInt>(ConstantVal);
-  return apInt->getAllWords();
+const uint64_t* LLVMAPIntGetAllWords(LLVMValueRef ConstantVal,
+                                     unsigned *numWords) {
+  ConstantInt *cInt = unwrap<ConstantInt>(ConstantVal);
+  const APInt &apInt = cInt->getValue();
+  *numWords = apInt.getNumWords();
+  return apInt.getAllWords();
 }
 
 

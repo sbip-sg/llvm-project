@@ -2015,13 +2015,14 @@ double LLVMConstRealGetDouble(LLVMValueRef ConstantVal, LLVMBool *losesInfo);
 unsigned LLVMAPIntGetNumWords(LLVMValueRef ConstantVal);
 
 /**
- * Obtain the list of words (64-bit word) of the arbitrary precision integer
- * value.
+ * Obtain an array containing all words (64-bit word) of the arbitrary precision
+ * integer value, and the total number of words.
  *
  * NOTE: this function is added as a part of LLVM-SBIP customized version.
  * It will be merged back to the official LLVM in the future.
  */
-const uint64_t* LLVMAPIntGetAllWords(LLVMValueRef ConstantVal);
+const uint64_t* LLVMAPIntGetAllWords(LLVMValueRef ConstantVal,
+                                     unsigned *numWords);
 
 /**
  * @}
