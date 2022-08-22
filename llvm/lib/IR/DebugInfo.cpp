@@ -1415,6 +1415,12 @@ LLVMDIFlags LLVMDITypeGetFlags(LLVMMetadataRef DType) {
   return map_to_llvmDIFlags(unwrapDI<DIType>(DType)->getFlags());
 }
 
+/// This function is added as a part of LLVM-SBIP customized version.
+/// Note: remove the above line when merge back to LLVM Official.
+LLVMDIFlags LLVMDISubprogramGetFlags(LLVMMetadataRef Subprogram) {
+  return map_to_llvmDIFlags(unwrapDI<DISubprogram>(Subprogram)->getFlags());
+}
+
 LLVMMetadataRef LLVMDIBuilderGetOrCreateTypeArray(LLVMDIBuilderRef Builder,
                                                   LLVMMetadataRef *Types,
                                                   size_t Length) {

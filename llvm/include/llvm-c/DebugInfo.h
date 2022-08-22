@@ -1075,6 +1075,15 @@ unsigned LLVMDITypeGetLine(LLVMMetadataRef DType);
 LLVMDIFlags LLVMDITypeGetFlags(LLVMMetadataRef DType);
 
 /**
+ * SBIP LLVM Project.
+ * Get the flags associated with this DISubProgram.
+ * \param SP     The DISubprogram.
+ *
+ * @see DISubprogram::getFlags()
+ */
+LLVMDIFlags LLVMDISubprogramGetFlags(LLVMMetadataRef SP);
+
+/**
  * Create a descriptor for a value range.
  * \param Builder    The DIBuilder.
  * \param LowerBound Lower bound of the subrange, e.g. 0 for C, 1 for Fortran.
