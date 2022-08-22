@@ -1081,7 +1081,7 @@ LLVMDIFlags LLVMDITypeGetFlags(LLVMMetadataRef DType);
  *
  * @see DISubprogram::getFlags()
  */
-LLVMDIFlags LLVMDISubprogramGetFlags(LLVMMetadataRef SP);
+LLVMDIFlags LLVMDISubprogramGetFlags(LLVMMetadataRef Subprogram);
 
 /**
  * Create a descriptor for a value range.
