@@ -1077,7 +1077,7 @@ LLVMDIFlags LLVMDITypeGetFlags(LLVMMetadataRef DType);
 /**
  * SBIP LLVM Project.
  * Get the flags associated with this DISubProgram.
- * \param SP     The DISubprogram.
+ * \param Subprogram     The DISubprogram.
  *
  * @see DISubprogram::getFlags()
  */
