@@ -1062,6 +1062,14 @@ LLVMValueRef LLVMGetNextFunction(LLVMValueRef Fn);
  */
 LLVMValueRef LLVMGetPreviousFunction(LLVMValueRef Fn);
 
+/**
+ * Get the parent module of a function.
+ *
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
+ */
+LLVMModuleRef LLVMGetFunctionParent(LLVMValueRef Fn);
+
 /** Deprecated: Use LLVMSetModuleInlineAsm2 instead. */
 void LLVMSetModuleInlineAsm(LLVMModuleRef M, const char *Asm);
 

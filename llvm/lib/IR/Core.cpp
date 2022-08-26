@@ -2396,6 +2396,15 @@ LLVMValueRef LLVMGetPreviousFunction(LLVMValueRef Fn) {
   return wrap(&*--I);
 }
 
+/// Get the parent module of the function.
+///
+/// Note: this function is added as a part of LLVM-SBIP customized version.
+/// Remove the above comment and this line merge back to the official LLVM.
+LLVMModuleRef LLVMGetFunctionParent(LLVMValueRef Fn) {
+  Function *Func = unwrap<Function>(Fn);
+  return wrap(Func->getParent());
+}
+
 void LLVMDeleteFunction(LLVMValueRef Fn) {
   unwrap<Function>(Fn)->eraseFromParent();
 }
