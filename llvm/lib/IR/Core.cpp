@@ -3110,8 +3110,38 @@ void LLVMSetCondition(LLVMValueRef Branch, LLVMValueRef Cond) {
 
 /*--.. Operations on switch instructions (only) ............................--*/
 
+LLVMValueRef LLVMGetSwitchCondition(LLVMValueRef Switch) {
+  return wrap(unwrap<SwitchInst>(Switch)->getCondition());
+}
+
+LLVMValueRef LLVMGetSwitchCase(LLVMValueRef Switch, unsigned idx) {
+  SwitchInst* SI = unwrap<SwitchInst>(Switch);
+  unsigned count = 0;
+
+  for (SwitchInst::CaseIt I = SI->case_begin(); I != SI->case_end(); ++I) {
+    if (count == idx) {
+      return wrap(I->getCaseValue());
+    }
+    count++;
+  }
+
+  return nullptr;
+}
+
+LLVMBasicBlockRef LLVMGetSwitchSuccessor(LLVMValueRef Switch, unsigned idx) {
+  return wrap(unwrap<SwitchInst>(Switch)->getSuccessor(idx));
+}
+
 LLVMBasicBlockRef LLVMGetSwitchDefaultDest(LLVMValueRef Switch) {
   return wrap(unwrap<SwitchInst>(Switch)->getDefaultDest());
+}
+
+unsigned LLVMGetSwitchNumCases(LLVMValueRef Switch) {
+  return unwrap<SwitchInst>(Switch)->getNumCases();
+}
+
+unsigned LLVMGetSwitchNumSuccessors(LLVMValueRef Switch) {
+  return unwrap<SwitchInst>(Switch)->getNumSuccessors();
 }
 
 /*--.. Operations on alloca instructions (only) ............................--*/

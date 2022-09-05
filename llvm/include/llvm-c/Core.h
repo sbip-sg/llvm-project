@@ -3525,6 +3525,8 @@ LLVMBool LLVMIsConditional(LLVMValueRef Branch);
  * This only works on llvm::BranchInst instructions.
  *
  * @see llvm::BranchInst::getCondition
+ *
+ * SBIP REVIEW: should be renamed to GetBranchCondition?
  */
 LLVMValueRef LLVMGetCondition(LLVMValueRef Branch);
 
@@ -3534,8 +3536,57 @@ LLVMValueRef LLVMGetCondition(LLVMValueRef Branch);
  * This only works on llvm::BranchInst instructions.
  *
  * @see llvm::BranchInst::setCondition
+ *
+ * SBIP REVIEW: should be renamed to SetBranchCondition?
  */
 void LLVMSetCondition(LLVMValueRef Branch, LLVMValueRef Cond);
+
+/**
+ * Obtain the condition of a switch instruction.
+ *
+ * This only works on llvm::SwitchInst instructions.
+ *
+ * @see llvm::SwitchInst::getCondition()
+ *
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
+ */
+LLVMValueRef LLVMGetSwitchCondition(LLVMValueRef SwitchInstr);
+
+/**
+ * Obtain the condition of a switch instruction.
+ *
+ * This only works on llvm::SwitchInst instructions.
+ *
+ * @see llvm::SwitchInst::getCondition()
+ *
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
+ */
+LLVMValueRef LLVMGetSwitchCondition(LLVMValueRef SwitchInstr);
+
+/**
+ * Obtain a case of a switch instruction.
+ *
+ * This only works on llvm::SwitchInst instructions.
+ *
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
+ */
+LLVMValueRef LLVMGetSwitchCase(LLVMValueRef SwitchInstr, unsigned idx);
+
+/**
+ * Obtain a successor of a switch instruction.
+ *
+ * This only works on llvm::SwitchInst instructions.
+ *
+ * @see llvm::SwitchInst::getSuccessor()
+ *
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
+ */
+LLVMBasicBlockRef LLVMGetSwitchSuccessor(LLVMValueRef SwitchInstr,
+                                         unsigned idx);
 
 /**
  * Obtain the default destination basic block of a switch instruction.
@@ -3545,6 +3596,30 @@ void LLVMSetCondition(LLVMValueRef Branch, LLVMValueRef Cond);
  * @see llvm::SwitchInst::getDefaultDest()
  */
 LLVMBasicBlockRef LLVMGetSwitchDefaultDest(LLVMValueRef SwitchInstr);
+
+/**
+ * Obtain the number of cases a switch instruction.
+ *
+ * This only works on llvm::SwitchInst instructions.
+ *
+ * @see llvm::SwitchInst::getNumCases()
+ *
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
+ */
+unsigned LLVMGetSwitchNumCases(LLVMValueRef SwitchInstr);
+
+/**
+ * Obtain the number of successors a switch instruction.
+ *
+ * This only works on llvm::SwitchInst instructions.
+ *
+ * @see llvm::SwitchInst::getNumSuccessors()
+ *
+ * NOTE: this function is added as a part of LLVM-SBIP customized version.
+ * It will be merged back to the official LLVM in the future.
+ */
+unsigned LLVMGetSwitchNumSuccessors(LLVMValueRef SwitchInstr);
 
 /**
  * @}
